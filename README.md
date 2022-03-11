@@ -91,8 +91,9 @@
 
 # 지역 변수 선언
 - th:with를 사용
-th:with="first=${users[0]}" 
-th:text="${first.username}
+
+      th:with="first=${users[0]}" 
+      th:text="${first.username}  
 - first.username 호출을 통해 선언한 지역 변수를 사용
 
 # 기본 객체들
@@ -103,7 +104,7 @@ th:text="${first.username}
 - ${#locale}
 
 **#request**
--#request 경우 HttpServletRequest 객체가 그대로 제공되기 떄문에 조회 시 힘들게 접근해야 함
+- #request 경우 HttpServletRequest 객체가 그대로 제공되기 떄문에 조회 시 힘들게 접근해야 함
 
 **해결법**
 - HTTP 요청 파라미터 접근: param
