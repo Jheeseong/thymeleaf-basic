@@ -52,3 +52,63 @@
   - Default: (value) ?: (defaultvalue)
 - 특별한 토큰:
   - No-Operatio
+# v1.1 3/11
+# 텍스트 - text,utext
+- 텍스트 출력하는 기능
+- HTML의 콘텐츠에 데이터 출력할 때 th:text 사용
+- HTML 콘텐츠 영역 안에서 직접 데이터 출력 시 [[...]] 사용
+- th:text 사용 : span th:text="${data}"
+- 컨텐츠 안에서 직접 출력 : [[${data}]]
+
+**Escape**
+- 뷰 템플릿으로 HTML 화면을 생성 할 때는 출력하는 데이터에 <,> 같은 특수 문자를 주의
+
+**HTML 엔티티**
+- 웹 브라우저는 <를 HTML 테그 시작으로 인식
+- < 테그를 시작이 아닌 문자로 표현하는 방법이 HTML 엔티티
+- HTML에서 사용하는 특수 문자를 HTML 엔티티로 변경하는 것을 **이스케이프**
+- th:inline="none" 타임리프는 [[...]]를 해석하기 떄문에, 글자를 보여주지 않음
+- 이 테그 안에서는 타임리프가 해석하지 않음
+
+# 변수 - SpringEL
+- 변수 표현식 : ${...}
+
+**Object**
+
+-  th:text="${user.username}" : user의 username을 프로퍼티 접근
+-  th:text="${user['username']}" : user의 username을 프로퍼티 접근
+-  th:text="${user.getUsername()}" : user의 getUsername을 직접 호출
+
+**List**
+- th:text="${users[0].username}" : List에서 첫번째 회원을 찾고 username 프로퍼티 접근
+- th:text="${users[0]['username']}"" : List에서 첫번째 회원을 찾고 username 프로퍼티 접근
+- th:text="${users[0].getUsername()}" : List에서 첫번쨰 회원을 찾고 메서드 직접 호출
+
+**Map**
+- th:text="${userMap['userA'].username}" : Map에서 UserA를 찾고, username 프로퍼팇 접근
+- th:text="${userMap['userA']['username']}" : Map에서 UserA를 찾고, username 프로퍼팇 접근
+- th:text="${userMap['userA'].getUsername()}" : Map에서 UserA를 찾고, 메서드 직접 호출
+
+# 지역 변수 선언
+- th:with를 사용
+th:with="first=${users[0]}" 
+th:text="${first.username}
+- first.username 호출을 통해 선언한 지역 변수를 사용
+
+# 기본 객체들
+- ${#request}
+- ${#response}
+- ${#session}
+- ${#servletContext}
+- ${#locale}
+
+**#request**
+-#request 경우 HttpServletRequest 객체가 그대로 제공되기 떄문에 조회 시 힘들게 접근해야 함
+
+**해결법**
+- HTTP 요청 파라미터 접근: param
+  - ex) ${param.paramData}
+- HTTP 세션 접근: session
+  - ex) ${session.sessionData}
+- 스프링 빈 접근: @
+  - ex) ${@helloBean.hello('Spring!')}
