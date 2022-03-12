@@ -113,3 +113,49 @@
   - ex) ${session.sessionData}
 - 스프링 빈 접근: @
   - ex) ${@helloBean.hello('Spring!')}
+
+# v1.2 3/12
+# 유틸리티 객체와 날짜
+
+**타임리프 유틸리티 객체들**
+- #message : 메시지, 국제화 처리
+- #uris : URI 이스케이프 지원
+- #dates : java.util.Date 서식 지원
+- #calendars : java.util.Calendar 서식 지원
+- #temporals : 자바8 날짜 서식 지원
+- #numbers : 숫자 서식 지원
+- #strings : 문자 관련 편의 기능
+- #objects : 객체 관련 기능 제공
+- #bools : boolean 관련 기능 제공
+- #arrays : 배열 관련 기능 제공
+- #lists , #sets , #maps : 컬렉션 관련 기능 제공
+- #ids : 아이디 처리 관련 기능 제공, 뒤에서 설명
+
+# URL 링크
+- 타임리프에서 URL을 생성할 때 @(...) 문법 사용
+- ex) th:gref="@{/hello}"
+- 쿼리 파라미터
+  - ()에 있는 부분은 쿼리파라미터로 처리
+  - ex) th:href="@{/hello(param1=${param1}, param2=${param2})}"
+- 경로 변수
+  - URL 경로상에 변수가 있으면 ()부분은 경로 변수로 처리
+  - ex) th:href="@{/hello/{param1}/{param2}(param1=${param1}, param2=${param2})}"
+- 경로 변수 + 쿼리 파라미터
+  - 경로 변수와 쿼리 파라미터를 함꼐 사용
+  - ex)  th:href="@{/hello/{param1}(param1=${param1}, param2=${param2})}"
+
+# 리터럴
+- 소수 코드 상에 고정된 값, ex) "hello", 10, 20
+- 문자 리터럴은 항상 '(작은 따옴표)가 필수
+- 띄어쓰기는 하나의 의미있는 문자여서 인식되지 않음 ex) th"text="hello world"는 인식되지 않음
+
+**리터럴 대체**
+- '(작은 따옴표) 대신 |(리터럴 대체 문법)를 사용한다면 가능
+  - ex) th:text="|hello ${data}|"
+
+# 연산
+- 비교 연산 : HTML 엔티티 사용하는 부분을 조심
+  - >(gt), <(lt), >=(ge), <=(le), !(not), ==(eq), !=(neq, ne)
+- 조건식 : 자바의 조건식과 유사
+- Elvis 연산자 : 조건식의 편의 버전
+- No-Operation : _ 인 경우 타임리프가 실행되지 않는 것처럼 동작하며 이를 사용하여 HTML의 내용 그대로 활용이 가능
