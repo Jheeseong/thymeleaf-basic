@@ -159,3 +159,42 @@
 - 조건식 : 자바의 조건식과 유사
 - Elvis 연산자 : 조건식의 편의 버전
 - No-Operation : _ 인 경우 타임리프가 실행되지 않는 것처럼 동작하며 이를 사용하여 HTML의 내용 그대로 활용이 가능
+
+# v1.3 3/13
+# 속성 값 설정
+**타임리프 태그 속성**
+- 타임리프는 HTML 태그에 th:* 속성을 지정하는 방식으로 동작
+- th:attrappend : 속성 값의 뒤에 값을 추가
+- th:attrprepend : 속성 값의 앞에 값을 추가
+- th:classappend : class 속성에 자연스럽게 추가
+
+**checked 처리**
+- HTML에서는 checked="false" 처리 시에도 checked 속성이 있기 떄문에 checked 처리가 됨
+- 이와 달리 타임리프의 th:checked는 값이 false인 경우 checked 속성 자체를 제거
+
+# 반복
+- th:each 문법을 사용
+  - ex) th:each="user : ${users}
+- 반복 시 오른쪽 컬렉션($(user))의 값을 하나씩 꺼내어 왼족 변수(user)에 담아서 태그 반복
+- th:each 는 List, 배열, Iterable, Enumeration을 구현한 모든 객체 반복에 사용 가능, map도 사용 가능하나 변수에 답기는 값은 map.Entry
+
+**반복 상태 유지**
+-  th:each="user, userStat : ${users}"
+- 반복의 두번쨰 파라미터를 설정하여 반복의 상태 확인이 가능 
+- 두번째 파라미터는 생략이 가능한데, 생략 시 지정한 변수명(user) + stat 가 됨
+
+**반복 상태 유지 기능**
+- index : 0부터 시작하는 값
+- count : 1부터 시작하는 값
+- size : 전체 사이즈
+- even , odd : 홀수, 짝수 여부( boolean )
+- first , last :처음, 마지막 여부( boolean )
+- current : 현재 객체
+
+# 조건부 평가
+- if, unless
+  - ex) th:if="${user.age lt 20}", th:unless="${user.age ge 20}"
+- 타임리프는 해당 조건이 맞지 않을 시 태그 자체를 랭더링 X
+- 조건이 false 인 경우 span 부분을 랜더링하지 않고 삭제
+- switch
+  - * 은 만족하는 조건이 없을 경우 사용하는 
