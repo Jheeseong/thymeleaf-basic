@@ -197,4 +197,52 @@
 - 타임리프는 해당 조건이 맞지 않을 시 태그 자체를 랭더링 X
 - 조건이 false 인 경우 span 부분을 랜더링하지 않고 삭제
 - switch
-  - * 은 만족하는 조건이 없을 경우 사용하는 
+  - * 은 만족하는 조건이 없을 경우 사용하는 디폴트
+
+# v1.3 3/13
+# 주석
+- 표준 HTML 주석
+  - <!-- -->
+  - 타임리프가 렌더링 하지 않고, 그대로 남겨둠
+- 타임리프 파서 주석
+  - <!--* */-->
+  - 타임리프가 렌더링에서 주석 부분을 제거
+- 타임리프 프로토타입 주석
+  - <!--/*/ /*/-->
+  - HTML 파일을 웹 브라우저에서 확인해 볼 때 HTML 주석으로 인식하여 렌더링 X
+  - 타임리프 렌더링 한 경우 보이는 기능
+
+# 블록
+- th:block
+- 타임리프 특성 상 HTML 태그안에 속성으로 기능 정의 후 사용하는데, 애매한 경우 사용
+- 블록은 렌더링 시 제거
+- ex) 
+
+      <th:block th:each="user : ${users}">
+       <div>
+       사용자 이름1 <span th:text="${user.username}"></span>
+       사용자 나이1 <span th:text="${user.age}"></span>
+       </div> <div>
+       요약 <span th:text="${user.username} + ' / ' + ${user.age}"></span>
+       </div>
+      </th:block>
+      
+# 자바스크립트 인라인
+- th:inline="javascript"
+- **텍스트 렌더링**
+  - 인라인 사용 전 -> var username = userA;
+  - 인라인 사용 후 -> var username = "userA";
+  - 인라인 사용 전으로 적용 시 변수명 그대로 사용하여 오류가 발생
+  - 인라인 사용 시 문자 타입의 경우 "를 포함해줌으로 오류 해결이 가능하며 이스케이프 처리도 함
+- **자바스크립트 내추럴 템플릿**
+  - var username2 = /*[[${user.username}]]*/ "test username";
+  - 인라인 사용 전 var username2 = /* userA */ "test username";
+  - 인라인 사용 후 var username2 = "userA";
+- **객체**
+  - 객체를 JSON으로 자동 변환
+  - var user = [[${user}]];
+  - 인라인 사용 전 var user = BasicController.User(username=userA, age=10);
+  - 인라인 사용 후 var user = {"username":"userA","age":10};
+- **자바스크립트 인라인 each**
+- [# th:each="user, stat : ${users}"]
+  - 결과 : var user1 = {"username":"userA","age":10}; var user2 = {"username":"userB","age":20}; ....
