@@ -199,7 +199,7 @@
 - switch
   - * 은 만족하는 조건이 없을 경우 사용하는 디폴트
 
-# v1.3 3/13
+# v1.4 3/14
 # 주석
 - 표준 HTML 주석
   - <!-- -->
@@ -246,3 +246,33 @@
 - **자바스크립트 인라인 each**
 - [# th:each="user, stat : ${users}"]
   - 결과 : var user1 = {"username":"userA","age":10}; var user2 = {"username":"userB","age":20}; ....
+
+# v1.5 3/15
+# 탬플릿 조각
+- 공통 영역 부분(상단, 하단, 좌측 카테고리 등)을 코드를 복사하여 사용하지 않고 템플릿 조각으로 가져와 사용
+- template/fragment/footer.html 안의 th:fragment="copy"
+  - 다른 곳에 포함되는 코드 조각
+- template/fragment/fragmentMain.html 안의 th:insert="~{template/fragment/footer :: copy}"
+  - footer 템플릿 안에 있는 th:fragment="copy" 부분을 템플릿 조각으로 가져와 사용한다는 의미
+
+**th:insert**
+- 현재 태그(div)내부에 추가
+
+**th:replace**
+- 현재 태그(div)를 대체
+
+**파라미터 사용**
+-  th:replace="~{template/fragment/footer :: copyParam ('데이터1', '데이터2')}"
+-  fragment의 파라미터를 받아서 동적으로 렌더링
+
+# 템플러 레이아웃
+- 코드 조각을 레이아웃에 넘겨서 사용하는 방법
+- 예를 들어 HEAD 에 공통으로사용하는 정보들을 한 곳에 모아두고 사용하지만, 각페이지마다 필요한 정보를 더 추가해서 사용도 가
+- th:replace="template/layout/base :: common_header(~{::title},~{::link})"
+  - ::title은 현재 페이지의 title 태그들을 전달
+  - ::link는 현재 페이지의 link 태그들을 전달
+- 공통 부분은 유지되고 타이틀,링크들이 교체 및 포함 된 것이 확인 가능
+
+# 템플릿 레이아웃 확장
+- HEAD 뿐만 아니라 html 전체에 적용이 가능
+- th:fragment 속성이 정의된 html을 기본으로 하고 필요한 내용을 전달해서 일부분을 변경
